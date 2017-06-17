@@ -12,7 +12,7 @@ if (isset($_POST["name"]) && isset($_POST["lastname"]) && isset($_POST["age"]) &
     $city = htmlspecialchars($_POST["city"]);
     $street = htmlspecialchars($_POST["street"]);
     $bio = "";
-
+ 
     if (isset($_POST["bio"])){
         $bio = htmlspecialchars($_POST["bio"]);
     }
