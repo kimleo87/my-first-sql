@@ -12,9 +12,8 @@ if (isset($_POST["name"]) && isset($_POST["lastname"]) && isset($_POST["age"]) &
     $city = htmlspecialchars($_POST["city"]);
     $street = htmlspecialchars($_POST["street"]);
     $bio = "";
- //det der fix you know
-// yo
 
+    //bio
     if (isset($_POST["bio"])){
         $bio = htmlspecialchars($_POST["bio"]);
     }
@@ -77,18 +76,15 @@ if (isset($_POST["name"]) && isset($_POST["lastname"]) && isset($_POST["age"]) &
     }
 }
 
-// Hardcoded array of profiles, used for early stage dev.
-/*
-$people = array(
-    "kim"=> array("name"=>"Kim", "lastname"=> "Christensen", "age"=> 30, "city"=> "Ballerup", "street"=> "Ballerup Byvej", "img"=> "kim1.jpg"),
-    "karsten"=> array("name"=>"karsten", "lastname"=> "Christensen", "age"=> 32, "city"=> "Ballerup", "street"=> "Ballerup Byvej", "img"=> "karsten.png"),
-    "knud"=> array("name"=>"knud", "lastname"=> "Christensen", "age"=> 20, "city"=> "Ballerup", "street"=> "Ballerup Byvej", "img"=> "knud.png"),
-);*/
-
 $people = array();
 
+$where = "";
+if (isset($_GET["search"])) {
+    $where = "WHERE name LIKE '%" . $_GET["search"] . "%' OR lastname LIKE '%" . $_GET["search"] . "%'";
+}
+
 // get data from db
-$sql = "SELECT id, name, lastname, age, city, street, img, bio FROM profiles";
+$sql = "SELECT id, name, lastname, age, city, street, img, bio FROM profiles " . $where;
 $result = $link->query($sql);
 if (!isset($result)) {
     echo "Error: " . $sql . "<br>" . $link->error;
@@ -137,9 +133,16 @@ $link->close();
             <input type="file" name="fileToUpload" id="fileToUpload">
             
         </div>
-        <input class="button" type="submit" value="add person"/>
+        <input class="button" type="submit" value="Add person"/>
         </fieldset>
     </form>
+    
+    <form action="index.php" method="GET">
+        <h2>Search</h2>
+        <input type="text" name="search"/>
+        <input class="button" type="submit" value="Search"/>
+    </form>
+
     <?php
     // Generate list of people from people array.
     foreach ($people as $person) {
